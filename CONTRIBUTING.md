@@ -1,6 +1,18 @@
 # Contributing to AVORYN
 
-AVORYN is currently led and maintained by Keishmar Sobers. Contributions should preserve the project's architecture, security model, and professional engineering standards.
+AVORYN is currently led and maintained by Keishmar Sobers. Contributions must preserve the project's architecture, security model, product direction, ownership, and professional engineering standards.
+
+## Current Contribution Status
+
+AVORYN is not currently operating as an open-contribution project.
+
+- Unsolicited pull requests are not accepted automatically.
+- External changes require prior discussion and explicit approval from the project owner.
+- A public repository does not grant permission to reuse or commercialize AVORYN's source code.
+- Any future accepted contribution may require separate written contribution or licensing terms.
+- The project owner retains final authority over scope, architecture, release decisions, and repository access.
+
+This document primarily defines the engineering workflow used by the project owner and any specifically authorized collaborators.
 
 ## Development Workflow
 
@@ -80,6 +92,7 @@ Update documentation when a change affects:
 - database schema
 - known limitations
 - roadmap status
+- ownership or licensing terms
 
 ## Definition of Done
 
@@ -93,3 +106,9 @@ A feature is complete only when:
 - documentation is accurate
 - temporary debugging code is removed
 - the Git history clearly explains the change
+
+## Ownership and Usage
+
+Copyright © 2026 Keishmar Sobers. All rights reserved.
+
+See [COPYRIGHT.md](COPYRIGHT.md) for the repository's ownership and usage terms.
