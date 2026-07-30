@@ -1,6 +1,12 @@
 import { useState } from "react";
 import MainLayout from "./layouts/MainLayout";
 import DashboardPage from "./pages/DashboardPage";
+import ProjectsPage from "./pages/ProjectsPage";
+import TasksPage from "./pages/TasksPage";
+import MemoryPage from "./pages/MemoryPage";
+import JournalPage from "./pages/JournalPage";
+import KnowledgeVaultPage from "./pages/KnowledgeVaultPage";
+import SettingsPage from "./pages/SettingsPage";
 import type { PageId } from "./types/navigation";
 
 function App() {
@@ -13,52 +19,22 @@ function App() {
         return <DashboardPage />;
 
       case "projects":
-        return (
-          <>
-            <h1>Projects</h1>
-            <p>Your AVORYN projects will appear here.</p>
-          </>
-        );
+        return <ProjectsPage />;
 
       case "tasks":
-        return (
-          <>
-            <h1>Tasks</h1>
-            <p>Your tasks will appear here.</p>
-          </>
-        );
+        return <TasksPage />;
 
       case "memory":
-        return (
-          <>
-            <h1>Memory</h1>
-            <p>AVORYN memory records will appear here.</p>
-          </>
-        );
+        return <MemoryPage />;
 
       case "journal":
-        return (
-          <>
-            <h1>Journal</h1>
-            <p>Your journal entries will appear here.</p>
-          </>
-        );
+        return <JournalPage />;
 
       case "vault":
-        return (
-          <>
-            <h1>Knowledge Vault</h1>
-            <p>Your stored knowledge will appear here.</p>
-          </>
-        );
+        return <KnowledgeVaultPage />;
 
       case "settings":
-        return (
-          <>
-            <h1>Settings</h1>
-            <p>AVORYN configuration options will appear here.</p>
-          </>
-        );
+        return <SettingsPage />;
     }
   }
 
