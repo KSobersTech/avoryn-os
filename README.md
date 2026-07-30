@@ -77,6 +77,7 @@ Persistent data is owned by the Rust backend. React owns temporary interface sta
 - [AVORYN Blueprint](docs/AVORYN-BLUEPRINT.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Development History](docs/DEVELOPMENT-HISTORY.md)
+- [Copyright and Usage Notice](COPYRIGHT.md)
 
 ## Local Development
 
@@ -123,6 +124,14 @@ AVORYN is developed with the following expectations:
 - Unit, integration, and end-to-end testing as features mature
 - No secrets, personal databases, or private Vault content committed to Git
 
+## Ownership and Use
+
+Copyright © 2026 Keishmar Sobers. All rights reserved.
+
+AVORYN is published as a portfolio and active-development project. The repository is publicly visible for evaluation, demonstration, and professional review. No license is granted to copy, modify, redistribute, sublicense, commercialize, or sell the source code except where applicable law or GitHub's Terms of Service provides otherwise.
+
+See [COPYRIGHT.md](COPYRIGHT.md) for the full ownership and usage notice.
+
 ## Author
 
 **Keishmar Sobers**  
@@ -131,4 +140,4 @@ GitHub: `KSobersTech`
 
 ## License
 
-A license will be selected before the first public release. Until then, all rights are reserved.
+AVORYN is not currently distributed under an open-source license. All rights are reserved by Keishmar Sobers. Licensing will be reassessed before any commercial release, reusable component release, or formal external-contribution program.
