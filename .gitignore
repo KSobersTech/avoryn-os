@@ -22,3 +22,17 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# AVORYN databases
+*.db
+*.db-shm
+*.db-wal
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+
+# Private local application data
+backups/
+vault/
+local-data/
