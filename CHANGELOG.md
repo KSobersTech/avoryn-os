@@ -27,11 +27,14 @@ The project follows an incremental development model. Formal semantic versioning
 - Product blueprint, architecture documentation, and development history
 - Professional README with project status, stack, roadmap, and setup instructions
 - Security policy and contribution guide
+- Copyright and usage notice reserving AVORYN's commercial and distribution rights
 
 ### Changed
 
 - Replaced the default Tauri starter interface with the AVORYN application identity
 - Refactored navigation content from a single component into reusable pages
+- Clarified that the public repository is for portfolio review and is not currently open source
+- Defined the approval requirement for external contributions
 
 ### Security
 
