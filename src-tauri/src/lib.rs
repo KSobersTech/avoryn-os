@@ -1,3 +1,4 @@
+mod domain;
 mod infrastructure;
 
 use infrastructure::database::initialize_database;
