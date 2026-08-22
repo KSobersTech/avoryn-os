@@ -67,3 +67,16 @@ pub struct CreateProjectInput {
     pub start_date: Option<String>,
     pub due_date: Option<String>,
 }
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct UpdateProjectInput {
+    pub name: String,
+    pub description: Option<String>,
+    pub workspace: Workspace,
+    pub project_kind: ProjectKind,
+    pub status: ProjectStatus,
+    pub priority: ProjectPriority,
+    pub start_date: Option<String>,
+    pub due_date: Option<String>,
+}

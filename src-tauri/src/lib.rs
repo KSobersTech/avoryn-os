@@ -26,7 +26,8 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             greet,
             commands::projects::create_project,
-            commands::projects::list_projects
+            commands::projects::list_projects,
+            commands::projects::update_project
         ])
         .run(tauri::generate_context!())
         .expect("error while running AVORYN");

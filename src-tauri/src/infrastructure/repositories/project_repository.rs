@@ -7,7 +7,8 @@ use sqlx::{FromRow, SqlitePool};
 use uuid::Uuid;
 
 use crate::domain::project::{
-    CreateProjectInput, Project, ProjectKind, ProjectPriority, ProjectStatus, Workspace,
+    CreateProjectInput, Project, ProjectKind, ProjectPriority, ProjectStatus, UpdateProjectInput,
+    Workspace,
 };
 
 #[derive(Debug)]
@@ -247,6 +248,118 @@ pub async fn list_projects(pool: &SqlitePool) -> Result<Vec<Project>, ProjectRep
     rows.into_iter().map(Project::try_from).collect()
 }
 
+pub async fn update_project(
+    pool: &SqlitePool,
+    project_id: &str,
+    input: UpdateProjectInput,
+) -> Result<Project, ProjectRepositoryError> {
+    let UpdateProjectInput {
+        name,
+        description,
+        workspace,
+        project_kind,
+        status,
+        priority,
+        start_date,
+        due_date,
+    } = input;
+
+    let normalized_name = name.trim().to_owned();
+
+    let normalized_description = description
+        .map(|value| value.trim().to_owned())
+        .filter(|value| !value.is_empty());
+
+    let audit_event_id = Uuid::new_v4().to_string();
+    let request_id = Uuid::new_v4().to_string();
+
+    let mut transaction = pool.begin().await?;
+
+    let project_row = sqlx::query_as::<_, ProjectRow>(
+        r#"
+        UPDATE projects
+        SET
+            name = ?,
+            description = ?,
+            workspace = ?,
+            project_kind = ?,
+            status = ?,
+            priority = ?,
+            start_date = ?,
+            due_date = ?,
+            completed_at = CASE
+                WHEN ? = 'completed'
+                    THEN COALESCE(
+                        completed_at,
+                        strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+                    )
+                ELSE NULL
+            END,
+            updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+        WHERE id = ?
+          AND deleted_at IS NULL
+        RETURNING
+            id,
+            name,
+            description,
+            workspace,
+            project_kind,
+            status,
+            priority,
+            start_date,
+            due_date,
+            completed_at,
+            created_at,
+            updated_at,
+            deleted_at
+        "#,
+    )
+    .bind(normalized_name)
+    .bind(normalized_description)
+    .bind(workspace_as_str(workspace))
+    .bind(project_kind_as_str(project_kind))
+    .bind(project_status_as_str(status))
+    .bind(project_priority_as_str(priority))
+    .bind(start_date)
+    .bind(due_date)
+    .bind(project_status_as_str(status))
+    .bind(project_id)
+    .fetch_one(&mut *transaction)
+    .await?;
+
+    sqlx::query(
+        r#"
+        INSERT INTO audit_events (
+            id,
+            request_id,
+            event_type,
+            resource_type,
+            resource_id,
+            outcome,
+            created_at
+        )
+        VALUES (
+            ?,
+            ?,
+            'project.updated',
+            'project',
+            ?,
+            'success',
+            strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+        )
+        "#,
+    )
+    .bind(audit_event_id)
+    .bind(request_id)
+    .bind(project_id)
+    .execute(&mut *transaction)
+    .await?;
+
+    transaction.commit().await?;
+
+    Project::try_from(project_row)
+}
+
 fn workspace_as_str(workspace: Workspace) -> &'static str {
     match workspace {
         Workspace::Engineering => "engineering",
@@ -274,7 +387,15 @@ fn project_priority_as_str(priority: ProjectPriority) -> &'static str {
         ProjectPriority::Critical => "critical",
     }
 }
-
+fn project_status_as_str(status: ProjectStatus) -> &'static str {
+    match status {
+        ProjectStatus::Planned => "planned",
+        ProjectStatus::Active => "active",
+        ProjectStatus::Paused => "paused",
+        ProjectStatus::Completed => "completed",
+        ProjectStatus::Archived => "archived",
+    }
+}
 fn parse_workspace(value: &str) -> Result<Workspace, ProjectRepositoryError> {
     match value {
         "engineering" => Ok(Workspace::Engineering),
