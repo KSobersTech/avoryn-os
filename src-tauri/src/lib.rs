@@ -1,3 +1,4 @@
+mod commands;
 mod domain;
 mod infrastructure;
 
@@ -22,7 +23,11 @@ pub fn run() {
 
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            commands::projects::create_project,
+            commands::projects::list_projects
+        ])
         .run(tauri::generate_context!())
         .expect("error while running AVORYN");
 }
