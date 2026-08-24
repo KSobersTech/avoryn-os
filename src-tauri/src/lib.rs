@@ -1,3 +1,5 @@
+mod commands;
+mod domain;
 mod infrastructure;
 
 use infrastructure::database::initialize_database;
@@ -21,7 +23,12 @@ pub fn run() {
 
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            commands::projects::create_project,
+            commands::projects::list_projects,
+            commands::projects::update_project
+        ])
         .run(tauri::generate_context!())
         .expect("error while running AVORYN");
 }
