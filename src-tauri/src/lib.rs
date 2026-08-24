@@ -27,7 +27,10 @@ pub fn run() {
             greet,
             commands::projects::create_project,
             commands::projects::list_projects,
-            commands::projects::update_project
+            commands::projects::update_project,
+            commands::tasks::create_task,
+            commands::tasks::list_tasks,
+            commands::tasks::update_task
         ])
         .run(tauri::generate_context!())
         .expect("error while running AVORYN");
