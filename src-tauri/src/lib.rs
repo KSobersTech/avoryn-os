@@ -26,6 +26,9 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             greet,
+            commands::memory::create_memory,
+            commands::memory::list_memories,
+            commands::memory::update_memory,
             commands::projects::create_project,
             commands::projects::list_projects,
             commands::projects::update_project,

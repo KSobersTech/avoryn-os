@@ -36,10 +36,6 @@ impl AppError {
         Self::new("NOT_FOUND", format!("{resource} was not found."))
     }
 
-    pub fn conflict(message: impl Into<String>) -> Self {
-        Self::new("CONFLICT", message)
-    }
-
     pub fn database(context: impl Into<String>) -> Self {
         Self::new(
             "DATABASE_ERROR",
