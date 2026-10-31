@@ -7,7 +7,7 @@ import type {
   ProjectPriority,
   Workspace,
 } from "../types/project";
-
+import { listProjects } from "../services/projectService";
 function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -46,7 +46,7 @@ function ProjectsPage() {
   useEffect(() => {
     async function loadProjects() {
       try {
-        const result = await invoke<Project[]>("list_projects");
+        const result = await listProjects();
 
         setProjects(result);
       } catch (error) {
