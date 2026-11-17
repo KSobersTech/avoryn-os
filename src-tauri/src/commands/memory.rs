@@ -89,3 +89,70 @@ fn map_repository_error(error: MemoryRepositoryError) -> AppError {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::validate_memory_input;
+
+    fn assert_validation_error(
+        result: Result<(), crate::application::error::AppError>,
+        expected_message: &str,
+    ) {
+        let error = result.expect_err("validation should reject the input");
+
+        assert_eq!(error.code, "VALIDATION_ERROR");
+        assert_eq!(error.message, expected_message);
+        assert!(error.context.is_none());
+    }
+
+    #[test]
+    fn accepts_values_at_documented_limits() {
+        let title = "t".repeat(160);
+        let content = "c".repeat(10_000);
+        let source = "s".repeat(500);
+
+        assert!(validate_memory_input(&title, &content, Some(&source)).is_ok());
+    }
+
+    #[test]
+    fn rejects_blank_title() {
+        assert_validation_error(
+            validate_memory_input("   ", "content", None),
+            "A memory title is required.",
+        );
+    }
+
+    #[test]
+    fn rejects_title_over_limit() {
+        assert_validation_error(
+            validate_memory_input(&"t".repeat(161), "content", None),
+            "A memory title cannot exceed 160 characters.",
+        );
+    }
+
+    #[test]
+    fn rejects_blank_content() {
+        assert_validation_error(
+            validate_memory_input("title", "\n\t", None),
+            "Memory content is required.",
+        );
+    }
+
+    #[test]
+    fn rejects_content_over_limit() {
+        assert_validation_error(
+            validate_memory_input("title", &"c".repeat(10_001), None),
+            "Memory content cannot exceed 10,000 characters.",
+        );
+    }
+
+    #[test]
+    fn rejects_source_over_limit_after_trimming() {
+        let source = format!("  {}  ", "s".repeat(501));
+
+        assert_validation_error(
+            validate_memory_input("title", "content", Some(&source)),
+            "A memory source cannot exceed 500 characters.",
+        );
+    }
+}
