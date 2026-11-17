@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import { invoke } from "@tauri-apps/api/core";
 
 import type { Workspace, ProjectKind, ProjectPriority, Project } from "../types/project";
+import { listProjects } from "../services/projectService";
 
 function ProjectsPage() {
     const [projects, setProjects] = useState<Project[]>([]);
@@ -49,7 +50,7 @@ function ProjectsPage() {
         async function loadProjects() {
             try {
                 const result =
-                    await invoke<Project[]>("list_projects");
+                    await listProjects();
 
                 setProjects(result);
             } catch (error) {
