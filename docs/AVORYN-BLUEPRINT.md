@@ -4,7 +4,7 @@
 **Repository:** `KSobersTech/avoryn-os`  
 **Current release:** Foundation  
 **Founder and Lead Engineer:** Keishmar Sobers  
-**Last updated:** July 30, 2026
+**Last updated:** November 16, 2026
 
 ## Founding Statement
 
@@ -147,7 +147,7 @@ Foundation is a local-first, single-user desktop application with:
 ### Persistence
 
 - SQLite
-- SQLx planned for the Rust database layer
+- SQLx in the Rust database layer
 
 ### Source Control
 
@@ -182,7 +182,11 @@ Completed:
 - reusable application shell
 - functional sidebar navigation
 - separate page components for Dashboard, Projects, Tasks, Memory, Journal, Knowledge Vault, and Settings
+- Rust-managed SQLite initialization and versioned migrations
+- persistent create, list, and edit workflows for Projects, Tasks, and Memory
+- backend validation, structured errors, and transactional audit events
+- automated Windows quality checks
 
 Next milestone:
 
-- Phase 5: SQLite database foundation using SQLx
+- complete the Memory vertical slice with tag management, archive/recovery behavior, and project relationships

@@ -1,7 +1,7 @@
 # AVORYN Development History
 
 **Purpose:** Preserve a concise engineering record of how AVORYN was designed and built.  
-**Last updated:** July 30, 2026
+**Last updated:** November 16, 2026
 
 This file records meaningful milestones, decisions, verification steps, and next actions. It is not a full transcript of development conversations or screenshots.
 
@@ -38,11 +38,7 @@ The Windows development environment was prepared and verified with:
 - Windows SDK
 - Tauri and Rust VS Code extensions
 
-The repository was cloned locally at:
-
-```text
-C:\Users\Keish\avoryn-os
-```
+The repository was cloned into a local development workspace. Machine-specific paths are intentionally excluded from the public engineering record.
 
 ## Phase 1 — AVORYN Foundation
 
@@ -129,6 +125,34 @@ Added:
 
 These documents preserve product intent, engineering architecture, and implementation history in the repository.
 
+## Phase 5 — SQLite and Projects
+
+### Accomplishments
+
+- Added SQLx and SQLite persistence.
+- Added versioned migrations and database initialization.
+- Implemented Project domain models, validation, commands, and repository operations.
+- Added persistent create, list, and update behavior.
+- Added transactional audit events for Project writes.
+
+## Phase 6 — Tasks
+
+### Accomplishments
+
+- Added the Tasks schema and expanded the audit model.
+- Implemented Task domain models, commands, and repository operations.
+- Added project relationships, scheduling fields, and persistent editing.
+
+## Phase 7 — Memory
+
+### Accomplishments
+
+- Added Memory and tag schemas.
+- Implemented typed Memory models and frontend service functions.
+- Added persistent Memory creation, listing, and editing.
+- Added workspace, kind, importance, source, and optional project metadata.
+- Added transactional audit events for Memory writes.
+
 ## Current Application State
 
 The current application includes:
@@ -140,30 +164,13 @@ The current application includes:
 - working sidebar navigation
 - active navigation highlighting
 - separate page components
+- persistent Projects, Tasks, and Memory workflows
+- backend validation and structured errors
+- transactional audit records
+- versioned SQLite migrations
 - GitHub-backed version history
 
-The pages currently contain placeholder content and do not yet persist user data.
-
-## Phase 5 — SQLite Database Foundation
-
-### Planned First Step
-
-From the `src-tauri` directory, add SQLx with SQLite, Tokio runtime, migration, macro, and derive support:
-
-```powershell
-cargo add sqlx --no-default-features --features runtime-tokio,sqlite,migrate,macros,derive
-```
-
-### Planned Work
-
-1. Add and verify SQLx dependencies.
-2. Create the migrations directory.
-3. Design the first Projects and Audit schema.
-4. Initialize SQLite in AVORYN’s application-data directory.
-5. Enable foreign keys.
-6. Run migrations at startup.
-7. Add database health verification.
-8. Build the first Project persistence vertical slice.
+Dashboard, Journal, Knowledge Vault, and Settings remain placeholder workspaces. Memory tag management, archive/recovery behavior, and project selection are the next focused milestone.
 
 ## Working Practice
 
@@ -188,6 +195,6 @@ Your branch is up to date with 'origin/main'.
 nothing to commit, working tree clean
 ```
 
-## Next Scheduled Session
+## Next Engineering Focus
 
-Continue Phase 5 at **5:00 PM Eastern on July 30, 2026**.
+Complete and harden the Memory vertical slice before beginning another Foundation module.

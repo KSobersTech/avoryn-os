@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "avoryn-os",
+  "productName": "AVORYN",
   "version": "0.1.0",
   "identifier": "com.ksoberstech.avoryn",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "avoryn-os",
+        "title": "AVORYN",
         "width": 800,
         "height": 600
       }

@@ -1,143 +1,144 @@
 # AVORYN
 
-AVORYN is a Windows-first personal intelligence platform built to help its owner organize projects, preserve knowledge, track commitments, and create a durable record of personal and professional growth.
+> A Windows-first, local-first personal intelligence platform that extends—not replaces—human judgment.
 
-> AVORYN exists to extend—not replace—human intelligence.
+![Quality](https://github.com/KSobersTech/avoryn-os/actions/workflows/quality.yml/badge.svg)
 
-## Project Status
+## Engineering Snapshot
 
-**Current release:** Foundation  
-**Development stage:** Active  
-**Current milestone:** SQLite persistence and the first complete Projects vertical slice
+| Area | Current implementation |
+|---|---|
+| Desktop | Tauri 2 application with a React 19 and TypeScript interface |
+| Persistence | SQLite database initialized by Rust with versioned SQLx migrations |
+| Projects | Persistent create, list, and edit workflows with backend validation and audit events |
+| Tasks | Persistent create, list, and edit workflows with project relationships and audit events |
+| Memory | Persistent create, list, and edit workflows with workspace, kind, importance, and source metadata |
+| Trust boundary | React owns temporary interface state; Rust validates and owns persistent operations |
+| Quality | TypeScript strict mode, production build, Rust formatting, Clippy, tests, dependency audit, and GitHub Actions |
 
-AVORYN is under active development. The current application includes a Tauri desktop shell, React and TypeScript frontend, Rust backend, functional sidebar navigation, and separate page components for Dashboard, Projects, Tasks, Memory, Journal, Knowledge Vault, and Settings.
+## Product Direction
 
-## Why This Project Exists
+AVORYN is designed to help its owner organize projects, preserve knowledge, track commitments, make decisions, and build a durable record of personal and professional growth. It is both a practical personal system and a flagship software-engineering portfolio project.
 
-AVORYN is being developed as both a practical personal system and a flagship software-engineering portfolio project. The project is designed to demonstrate professional desktop application development, architecture, persistence, security, testing, documentation, and long-term product thinking.
+The project emphasizes local ownership, traceable actions, explainable recommendations, and narrowly scoped capabilities. Autonomous external actions and AI-generated answers are intentionally outside the Foundation release.
 
-## Technology Stack
+## Current Release
 
-- **Desktop framework:** Tauri 2
-- **Frontend:** React, TypeScript, Vite
-- **Backend:** Rust
-- **Database:** SQLite with SQLx *(Phase 5)*
-- **Version control:** Git and GitHub
-- **Primary platform:** Windows
+**Release:** Foundation
 
-## Current Capabilities
+**Stage:** Active development
 
-- Native Windows desktop application
-- React-to-Rust communication through Tauri
-- Modular application shell
-- Functional sidebar navigation
-- Separate page components for core workspaces
-- Documented architecture, product vision, and development history
+**Current milestone:** Complete and harden the Memory vertical slice, then extend the same architecture to remaining Foundation modules.
 
-## Foundation Roadmap
+### Implemented
 
-- [x] Initialize Tauri, React, TypeScript, and Rust application
-- [x] Build the AVORYN application shell
-- [x] Add functional sidebar navigation
-- [x] Separate navigation pages into reusable components
-- [x] Document the product vision and architecture
-- [ ] Configure SQLite persistence with SQLx
-- [ ] Implement persistent Projects management
-- [ ] Add validation, error handling, and audit events
-- [ ] Establish the AVORYN visual identity and design system
-- [ ] Add automated tests and GitHub Actions quality checks
+- Native Windows desktop shell and workspace navigation
+- Rust-managed SQLite initialization and versioned migrations
+- Persistent Projects, Tasks, and Memory vertical slices
+- Typed Tauri command payloads and responses
+- Backend validation and structured public errors
+- Transactional audit events for create and update operations
+- Loading, empty, and error states for implemented workflows
+- Automated Windows quality checks
 
-## Planned Core Modules
+### Not yet implemented
 
-- Dashboard
-- Projects
-- Tasks
-- Memory
-- Knowledge Vault
-- Journal
-- Decisions
-- Promise Ledger
-- Trust and Approvals
-- Audit
-- Settings
+- Memory tag management in the interface
+- Knowledge Vault managed-file workflows
+- Journal, Decisions, Promise Ledger, Trust, and Audit interfaces
+- Database encryption and backup/restore workflows
+- AI provider integration, semantic search, cloud sync, mobile access, or autonomous actions
 
 ## Architecture
 
-AVORYN uses a modular-monolith architecture with clear separation between:
+AVORYN is a modular monolith with four deliberate layers:
 
-1. **Presentation** — React and TypeScript interface
-2. **Application** — use cases and orchestration
-3. **Domain** — business rules and core entities
-4. **Infrastructure** — SQLite, file system, logging, and operating-system integrations
+```text
+React presentation
+        ↓
+Typed Tauri commands
+        ↓
+Rust domain and application logic
+        ↓
+SQLx repositories and SQLite
+```
 
-Persistent data is owned by the Rust backend. React owns temporary interface state and communicates with Rust through narrowly scoped Tauri commands.
+Persistent data is owned by Rust. React owns temporary interface state and communicates through narrowly scoped commands. Repository operations use parameterized SQL and transactions; successful writes create audit events in the same transaction.
 
-## Documentation
+See [Architecture](docs/ARCHITECTURE.md) for the complete design and trust model.
 
-- [AVORYN Blueprint](docs/AVORYN-BLUEPRINT.md)
-- [Architecture](docs/ARCHITECTURE.md)
-- [Development History](docs/DEVELOPMENT-HISTORY.md)
-- [Copyright and Usage Notice](COPYRIGHT.md)
+## Technology Stack
+
+- **Desktop:** Tauri 2
+- **Frontend:** React 19, TypeScript, Vite
+- **Backend:** Rust
+- **Persistence:** SQLite and SQLx
+- **Primary platform:** Windows
+- **Automation:** GitHub Actions
+
+## Repository Guide
+
+```text
+src/                         React presentation and frontend services
+src-tauri/src/commands/      Typed desktop command boundary
+src-tauri/src/domain/        Core entities and input models
+src-tauri/src/infrastructure Database initialization and repositories
+src-tauri/migrations/        Versioned SQLite schema
+docs/                        Product, architecture, and delivery records
+```
 
 ## Local Development
 
 ### Prerequisites
 
 - Windows 11
-- Node.js and npm
-- Rust, Cargo, and rustup
+- Node.js 22.12 or newer
+- Rust stable, Cargo, and rustup
 - Microsoft Visual Studio Build Tools with Desktop development with C++
-- Windows SDK
+- Windows SDK and WebView2
 
-### Run the application
+### Install and run
 
 ```powershell
-npm install
+npm ci
 npm run tauri dev
 ```
 
-### Frontend build
+### Required checks
 
 ```powershell
+npm audit --audit-level=high
 npm run build
-```
 
-### Rust checks
-
-```powershell
 cd src-tauri
 cargo fmt --check
 cargo clippy --all-targets --all-features -- -D warnings
 cargo test --all-targets
 ```
 
-## Engineering Standards
+The same checks run automatically for pull requests and updates to `main`.
 
-AVORYN is developed with the following expectations:
+## Security and Privacy
 
-- TypeScript strictness and typed frontend/backend contracts
-- Safe, idiomatic Rust
-- Parameterized SQL and versioned migrations
-- Least-privilege desktop permissions
-- Backend validation of all persistent operations
-- Meaningful Git commits and documented architectural decisions
-- Unit, integration, and end-to-end testing as features mature
-- No secrets, personal databases, or private Vault content committed to Git
+- No secrets, personal databases, Vault content, or private logs belong in Git.
+- Backend validation remains authoritative even when the interface validates first.
+- SQL is parameterized and migrations are versioned.
+- Persistent writes use audit records and transactional boundaries.
+- The Foundation release is single-user and local-first; database encryption is not yet implemented.
+
+See [SECURITY.md](SECURITY.md) for supported versions, reporting guidance, and current limitations.
+
+## Documentation
+
+- [AVORYN Blueprint](docs/AVORYN-BLUEPRINT.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Development History](docs/DEVELOPMENT-HISTORY.md)
+- [Phase 5: SQLite Projects](docs/PHASE-5-SQLITE-PROJECTS.md)
+- [Changelog](CHANGELOG.md)
+- [Contribution Guide](CONTRIBUTING.md)
 
 ## Ownership and Use
 
 Copyright © 2026 Keishmar Sobers. All rights reserved.
 
-AVORYN is published as a portfolio and active-development project. The repository is publicly visible for evaluation, demonstration, and professional review. No license is granted to copy, modify, redistribute, sublicense, commercialize, or sell the source code except where applicable law or GitHub's Terms of Service provides otherwise.
-
-See [COPYRIGHT.md](COPYRIGHT.md) for the full ownership and usage notice.
-
-## Author
-
-**Keishmar Sobers**  
-Founder and Lead Engineer  
-GitHub: `KSobersTech`
-
-## License
-
-AVORYN is not currently distributed under an open-source license. All rights are reserved by Keishmar Sobers. Licensing will be reassessed before any commercial release, reusable component release, or formal external-contribution program.
+AVORYN is publicly visible for evaluation, demonstration, and professional review. It is not currently distributed under an open-source license. See [COPYRIGHT.md](COPYRIGHT.md) for the full ownership and usage notice.

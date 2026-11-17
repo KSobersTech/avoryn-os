@@ -1,7 +1,7 @@
 # AVORYN Architecture
 
 **Status:** Approved foundation architecture  
-**Last updated:** July 30, 2026
+**Last updated:** November 16, 2026
 
 ## Architectural Style
 
@@ -231,7 +231,27 @@ cargo build
 
 A feature is complete only when its behavior, validation, security, testing, documentation, and recovery states are addressed.
 
-## First Persistent Vertical Slice
+## Implemented Vertical Slices
+
+Projects, Tasks, and Memory currently follow the intended boundary:
+
+```text
+React page
+    ↓
+Typed invoke request
+    ↓
+Tauri command and Rust validation
+    ↓
+SQLx repository transaction
+    ↓
+Domain record plus audit event
+    ↓
+Typed response and rendered state
+```
+
+All three modules support create, list, and update behavior. Memory additionally has a tag relationship schema; tag-management commands and interface behavior remain future work.
+
+## Persistent Vertical-Slice Standard
 
 ```text
 Create Project
