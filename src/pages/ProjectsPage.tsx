@@ -2,40 +2,7 @@ import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { invoke } from "@tauri-apps/api/core";
 
-type Workspace =
-    | "engineering"
-    | "school"
-    | "career"
-    | "life"
-    | "system";
-
-type ProjectKind =
-    | "personal"
-    | "client"
-    | "portfolio"
-    | "academic";
-
-type ProjectPriority =
-    | "low"
-    | "medium"
-    | "high"
-    | "critical";
-
-type Project = {
-    id: string;
-    name: string;
-    description: string | null;
-    workspace: Workspace;
-    projectKind: ProjectKind;
-    status: string;
-    priority: ProjectPriority;
-    startDate: string | null;
-    dueDate: string | null;
-    completedAt: string | null;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string | null;
-};
+import type { Workspace, ProjectKind, ProjectPriority, Project } from "../types/project";
 
 function ProjectsPage() {
     const [projects, setProjects] = useState<Project[]>([]);
